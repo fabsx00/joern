@@ -18,9 +18,9 @@ import the code as follows
 
 .. code-block:: none
 
-	`cd $JOERN`
-	`tar -cvf testCode.tar.gz testCode`
-	`joern-import testCode.tar.gz`
+	cd $JOERN
+	tar -cvzf testCode.tar.gz testCode
+	joern-import testCode.tar.gz
 
 This will upload the tarball to the server, unpack it, parse the code
 and create a new project and corresponding graph database. The project
