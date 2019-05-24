@@ -27,7 +27,7 @@ select a project, connect to the server and run a Gremlin query.
    from octopus.server.DBInterface import DBInterface
 
    projectName = 'testCode.tar.gz'
-   query = "g.V.has('type', 'Function').code"
+   query = "g.V().has('type', 'Function').values('code')"
 
    db = DBInterface()
    db.connectToDatabase(projectName)
@@ -46,7 +46,8 @@ Running the same traversal on a large set of start nodes often leads
 to unacceptable performance as all nodes and edges touched by the
 traversal are kept in server memory before returning results. For
 example, the query::
-	g.V.has('type', 'FunctionDef').astNodes().id
+
+	g.V().has('type', 'FunctionDef').astNodes().id()
 
 which retrieves all astNodes that are part of functions, can already
 completely exhaust memory.
@@ -59,7 +60,7 @@ performance. The following example code shows how this works::
 	from octopus.server.DBInterface import DBInterface
 
 	projectName = 'testCode.tar.gz'
-	query = "g.V.has('type', 'FunctionDef').id"
+	query = "g.V().has('type', 'FunctionDef').id()"
 
 	db = DBInterface()
 	db.connectToDatabase(projectName)
@@ -68,7 +69,7 @@ performance. The following example code shows how this works::
 
 	CHUNK_SIZE = 256
 	for chunk in db.chunks(ids, CHUNK_SIZE):
-	     query = """ idListToNodes(%s).astNodes().id """ % (chunk)
+	     query = """ idListToNodes(%s).astNodes().id() """ % (chunk)
 	     for r in db.runGremlinQuery(query):
 		  print(r)
 
